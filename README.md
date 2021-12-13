@@ -7,6 +7,6 @@ This program is a slightly modified version of his strategy that outputs 35 stoc
 
 Every company listed on the NASDAQ and NYSE is filtered through the program in Step 1, leaving only companies with a market capitalization between $200M and $200B. 
 
-Then, this filtered list is ranked based off of earnings yield and return on capital. The two rankings are added together to create a combined ranking.
+Then in Step 2, this filtered list is ranked based off of earnings yield and return on capital. The two rankings are added together to create a combined ranking.
 
 The output is the 35 stocks with the lowest combined ranking. 
