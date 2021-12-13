@@ -1,4 +1,5 @@
-# The Magic Formula is a value investing strategy created by Joel Greenblatt (Managing Principal and Co-Chief Investment Officer of Gotham Asset Management).
+# The Magic Formula
+### A value investing strategy created by Joel Greenblatt (Managing Principal and Co-Chief Investment Officer of Gotham Asset Management).
 
 This program is a slightly modified version of his strategy that outputs 35 stocks based off rankings in return on capital and earnings yield. 
 
