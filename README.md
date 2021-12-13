@@ -10,3 +10,6 @@ Every company listed on the NASDAQ and NYSE is filtered through the program in S
 Then in Step 2, this filtered list is ranked based off of earnings yield and return on capital. The two rankings are added together to create a combined ranking.
 
 The output is the 35 stocks with the lowest combined ranking. 
+
+
+### Uses the YFinance API (a package) as well as Numpy and Pandas
