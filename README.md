@@ -5,11 +5,11 @@ This program is a slightly modified version of his strategy that outputs 35 stoc
 
 ## How does it work?
 
-Every company listed on the NASDAQ and NYSE is filtered through the program in Step 1, leaving only companies with a market capitalization between $200M and $200B. 
+Every company listed on the NASDAQ and NYSE is filtered through the program in Step 1, leaving only companies with a market capitalization between $100M and $100B. 
 
 Then in Step 2, this filtered list is ranked based off of earnings yield and return on capital. The two rankings are added together to create a combined ranking.
 
 The output is the 35 stocks with the lowest combined ranking. 
 
 
-### Uses the YFinance API (a package) as well as Numpy and Pandas
+### Uses the YFinance API (a package) as well as Numpy, Pandas, and the concurrent.futures library
