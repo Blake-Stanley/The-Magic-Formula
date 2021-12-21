@@ -1,7 +1,10 @@
 /Plan.txt
 /Resources
+<<<<<<< HEAD
 Step 2 - Stock Evaluation/MagicFormula_asyncio.py
 
 # Ignore Mac DS_Store files
 .DS_Store
 **/.DS_Store
+=======
+>>>>>>> 39e56e260a30f92dd90f7315ea8683c36cab7d1e
