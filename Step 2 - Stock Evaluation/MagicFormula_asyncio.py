@@ -2,6 +2,39 @@ import yfinance as yf
 import pandas as pd
 import csv
 import concurrent.futures 
+import asyncio
+
+'''
+Replace concurrent futures' threading with asyncio asynchronous code - should increase speed
+
+'''
+
+
+#! NOT POSSIBLE
+
+'''
+I have checked documentation of yfinance and see requests library in requirements, the library ins not async. 
+It means that you should not use it with asyncio module, 
+you should use theading.Thread or concurrent.futures.ThreadPoolExecutor instead.
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Stock():
     '''Creates data type with earnings yield and return on capital for a stock'''
@@ -45,48 +78,50 @@ class StockDataAssigner():
     def __init__(self, tickers):
         self.tickers = tickers
         self.stockObjectList = []
-        self.numberFailures = 0
-        self.numberSuccess = 0
     
-    def assignTickerDataToObject(self, i): # use list of tickers from function above as input
+    #TODO look up how to use asyncio with an api i think the problem is not being able to say await on the api calls cause of the library
+    async def assignTickerDataToObject(self, i): # use list of tickers from function above as input
         error = False
+        #! creates a TypeError for every stock, might be because the variables get all mixed up in the event loop because it doesn't wait for stockPe and stockCapital ??
         try:
             # create list of stock objects with earnings yield and return on assets data 
-            # print(f"Began calculating and assigning financial data for ticker #{i+1} out of {len(self.tickers)} tickers")
+            print(f"Began calculating and assigning financial data for ticker #{i+1} out of {len(self.tickers)} tickers")
             stockTicker = self.tickers[i]
             tickerObject = yf.Ticker(stockTicker)
             stockPE = tickerObject.info['trailingPE'] ** -1 # inverse of PE = earnings yield
             stockCapital = tickerObject.info['returnOnAssets']
-            
+            '''Making these two three lines await makes program really fast but raises type error
+            Also, i don't think you can do await on object calls and dictionary calls so maybe that's why'''
+
         except KeyError:
             error = True
-            self.numberFailures += 1
-            # print(f"KeyError #{i+1}")
-            print(f"{self.numberFailures + self.numberSuccess} out of {len(self.tickers)}")
+            print(f"KeyError #{i+1}")
         except TypeError:
             error = True
-            self.numberFailures += 1
-            # print(f"TypeError #{i+1}")
-            print(f"{self.numberFailures + self.numberSuccess} out of {len(self.tickers)}")
+            print(f"TypeError #{i+1}")
+            # raise TypeError
         finally:
             if not error and stockPE != None and stockCapital != None:
                 StockObject = Stock(stockTicker, stockPE, stockCapital)
                 self.stockObjectList.append(StockObject)
-                self.numberSuccess += 1
-                print(f"{self.numberFailures + self.numberSuccess} out of {len(self.tickers)}")
-                # print(f"SUCCESS #{i+1}")
+                print(f"SUCCESS #{i+1}")
         error = False
+        '''
+        maybe run this whole block in sequence for each iteration and then run all the iterations in parallel
+        see ArjanCodes asynchronous tutorial on youtube 
+        '''
+    
+    async def assignTickerDataToObjectTEST(self, i):
+        await asyncio.sleep(2)
+        print(i)
         
-    def threadingDataAssignment(self):
-        #! Try asyncio instead (see youtube video in python saved videos )
-        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor: # 400 max workers likely not ideal... 1000 sometimes works faster but can get stuck
-                executor.map(self.assignTickerDataToObject, range(len(self.tickers)-1))
+    async def asyncDataAssignment(self):
+        await asyncio.gather(*[self.assignTickerDataToObject(i) for i in range(len(self.tickers))])
+        
+
     
     def getStockObjectList(self):
         return self.stockObjectList
-    
-    def getNumberFailures(self):
-        return self.numberFailures
 
 
 def makeListOfListsIntoList(list):
@@ -136,7 +171,7 @@ def main():
     
     # create data assigner that goes through and gets financial data from yahoo and assigns to stock object
     DataAssignment = StockDataAssigner(tickers)
-    DataAssignment.threadingDataAssignment()
+    asyncio.run(DataAssignment.asyncDataAssignment())
     
     
     # print(DataAssignment.getStockObjectList())
@@ -144,13 +179,12 @@ def main():
     
     magicFormulaRankedStocks = rankStocks(DataAssignment.getStockObjectList())
     
-    # create new list with top 30 magic formula ranked stocks
+    # create new list with top 35 magic formula ranked stocks
     top35 = []
     for i in range(35):
         top35.append(magicFormulaRankedStocks[i])
     
     print(top35)
-    print(f"{DataAssignment.getNumberFailures()}")
      
 
 if __name__ == '__main__':
