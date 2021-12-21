@@ -1,4 +1,3 @@
-*.DS_Store
+/.DS_Store
 /Plan.txt
 /Resources
-Step 2 - Stock Evaluation/MagicFormula_asyncio.py
