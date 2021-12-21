@@ -35,7 +35,7 @@ class Stock():
         self.earningsRanking = ranking
     
     def setCapitalRanking(self, ranking):
-        self.capitalRanking = ranking
+        self.capitalRanking = ranking 
     
     def getCombinedRanking(self):
         self.combinedRanking = self.earningsRanking + self.capitalRanking
@@ -99,8 +99,8 @@ def rankStocks(stockObjectList):
     earningsRankedList = sorted(stockObjectList, key=rankEarningsYield, reverse=True)
     
     for i in range(len(stockObjectList)-1):
-        capitalRankedList[i].setCapitalRanking(i)
-        earningsRankedList[i].setEarningsRanking(i)
+        capitalRankedList[i].setCapitalRanking(i+1) # +1 cause index starts at 0
+        earningsRankedList[i].setEarningsRanking(i+1) # +1 cause index starts at 0
     
     magicFormulaRankedList = sorted(stockObjectList, key=magicFormula)
     
